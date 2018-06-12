@@ -1,2 +1,2 @@
 # Veg-LA
-Crowd-sourced web app that publishes reviews about local vegan businesses in the Los Angeles area.
+Web app that publishes crowd-sourced reviews about local vegan businesses in the Los Angeles area.
