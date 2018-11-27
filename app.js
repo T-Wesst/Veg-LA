@@ -1,24 +1,28 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-var flash = require("connect-flash");
-var Blogpost = require("./models/blogpost");
-var passport = require("passport");
-var LocalStrategy = require("passport-local");
-var methodOverride = require("method-override");
-var Comment = require("./models/comment");
-var User = require("./models/user");
-var seedDB = require("./seeds");
+const express = require("express"),
+  app = express(),
+  bodyParser = require("body-parser"),
+  mongoose = require("mongoose"),
+  flash = require("connect-flash"),
+  Blogpost = require("./models/blogpost"),
+  passport = require("passport"),
+  LocalStrategy = require("passport-local"),
+  methodOverride = require("method-override"),
+  Comment = require("./models/comment"),
+  User = require("./models/user"),
+  seedDB = require("./seeds"),
+  port = process.env.PORT || 3000;
 
 //REQUIRING ROUTES
-var commentRoutes = require("./routes/comments");
-var blogpostRoutes = require("./routes/blogposts");
-var indexRoutes = require("./routes/index");
+const commentRoutes = require("./routes/comments"),
+  blogpostRoutes = require("./routes/blogposts"),
+  indexRoutes = require("./routes/index");
 
 //env var deployment || local
-var url = process.env.DATABASEURL || "mongodb://localhost/BlogApp";
-mongoose.connect(url);
+const url = process.env.DATABASEURL || "mongodb://localhost/BlogApp";
+mongoose.connect(
+  url,
+  { useNewUrlParser: true }
+);
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,7 +50,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // middleware called on every route and template
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
@@ -57,6 +61,6 @@ app.use("/", indexRoutes);
 app.use("/blogposts/:id/comments", commentRoutes);
 app.use("/blogposts", blogpostRoutes);
 
-app.listen(process.env.PORT || 3000, process.env.IP, function() {
-  console.log("The BlogApp server has started!");
-});
+app.listen(port, process.env.IP, () =>
+  console.log(`The server is running on port ${port}`)
+);
