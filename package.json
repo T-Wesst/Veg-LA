@@ -1,0 +1,23 @@
+{
+  "name": "veg-la",
+  "version": "1.0.0",
+  "description": "Veg-LA v1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/T-Wesst/Veg-LA.git"
+  },
+  "author": "Tyroo West",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/T-Wesst/Veg-LA/issues"
+  },
+  "homepage": "https://github.com/T-Wesst/Veg-LA#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
