@@ -1,36 +1,62 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3000;
-// set template
-app.set("view engine", "ejs");
+var express = require("express");
+var app = express();
+var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var flash = require("connect-flash");
+var Blogpost = require("./models/blogpost");
+var passport = require("passport");
+var LocalStrategy = require("passport-local");
+var methodOverride = require("method-override");
+var Comment = require("./models/comment");
+var User = require("./models/user");
+var seedDB = require("./seeds");
 
-// GET landing page
-app.get("/", (req, res) => res.render("landing"));
-// GET all posts
-app.get("/blogposts", (req, res) => {
-  // Arr of Data
-  let blogposts = [
-    {
-      name: "some place",
-      image:
-        "https://usateatsiptrip.files.wordpress.com/2018/05/30899974_1944977615573365_7140452609285947392_n.jpg?w=1000&h=600&crop=1"
-    },
-    {
-      name: "some place1",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlxEiTdKvUYhcQ1sa-uairi-rNjSVoUh255kxcuFp-_rFAvbyq"
-    },
-    {
-      name: "some place2",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW7Ai31u9cpZwL-dt2pou_3xkMNKnGnfhKu6KMDmkFbdiN-qyO"
-    }
-  ];
-  // renders views/blogposts.ejs {name:dataPassedIn}
-  res.render("blogposts", { blogposts: blogposts });
+//REQUIRING ROUTES
+var commentRoutes = require("./routes/comments");
+var blogpostRoutes = require("./routes/blogposts");
+var indexRoutes = require("./routes/index");
+
+//env var deployment || local
+var url = process.env.DATABASEURL || "mongodb://localhost/BlogApp";
+mongoose.connect(url);
+
+app.use(express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
+app.use(flash());
+app.set("view engine", "ejs");
+// seedDB(); seeds the database
+
+//MomentJS used in all view files via var moment
+app.locals.moment = require("moment");
+
+//PASSPORT CONFIGURATION
+app.use(
+  require("express-session")({
+    secret: "this text can be anything",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// middleware called on every route and template
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
+  next();
 });
 
-// PORT
-app.listen(port, process.env.IP, () =>
-  console.log(`The server is running on port ${port}`)
-);
+app.use("/", indexRoutes);
+app.use("/blogposts/:id/comments", commentRoutes);
+app.use("/blogposts", blogpostRoutes);
+
+app.listen(process.env.PORT || 3000, process.env.IP, function() {
+  console.log("The BlogApp server has started!");
+});

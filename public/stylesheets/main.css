@@ -1,0 +1,38 @@
+body {
+    background-color: #CFCFCF;
+}
+.navbar-default {
+    background-color: #28BA76;
+}
+
+header.jumbotron {
+    background-color: #28BA76;
+}
+
+h4 strong {
+    text-transform: uppercase;
+}
+
+div.thumbnal {
+    background-color: red;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnal .caption-full {
+    padding: 9px;
+}
+
+div.caption-full {
+    padding: 10px;
+}
+
+.delete-form {
+    display: inline;
+}

@@ -1,0 +1,31 @@
+<% include ../partials/header %>
+
+    <header class="jumbotron">
+        <div class="container">
+            <h1 class="text-center">Welcome to Veg-LA!</h1>
+            <p>
+                <div class="text-center">
+                    <a class="center btn btn-primary btn-lg" href="/blogposts/new"><i class="fas fa-plus"></i> add new Location</a>
+                </div>
+            </p>
+        </div>
+    </header>
+
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% blogposts.forEach(function(blogposts) { %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <img src="<%= blogposts.image %>">
+                    <div class ="caption">
+                        <h4><strong><%= blogposts.title%></strong></h4>
+                        <h4><%= blogposts.body.substring(0, 100) %>...</h4>
+                    </div>
+                    <p>
+                    <a href="/blogposts/<%= blogposts._id %>" class="btn btn-primary">Read More <i class="fas fa-angle-right"></i></a>
+                    </p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+<% include ../partials/footer %>

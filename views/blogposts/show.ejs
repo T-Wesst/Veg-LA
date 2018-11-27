@@ -1,0 +1,55 @@
+<% include ../partials/header %>
+
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">Veg-LA</p>
+            <div class="list-group">
+                <li class="list-group-item active">Info 1</li>
+                <li class="list-group-item">Info 2</li>
+                <li class="list-group-item">Info 3</li>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img-responsive" src="<%= blogpost.image %>">
+                <div class="caption-full">
+                    <h4 class="pull-right">$<%=Number(blogpost.price).toFixed(2) %></h4>
+                    <h4><a><%= blogpost.title%></a></h4>
+                    <p><%= blogpost.body %></p>
+                    <p><em>Submitted by <%= blogpost.author.username %>, <%= moment(blogpost.createdAt).fromNow() %></em></p>
+                    <% if(currentUser && blogpost.author.id.equals(currentUser._id)){ %>
+                        <a href="/blogposts/<%= blogpost._id %>/edit" class="btn btn-warning"><i class="far fa-edit"></i> Edit</a>
+                        <form class="delete-form" action="/blogposts/<%= blogpost._id %>?_method=DELETE" method="post">
+                            <button class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+            <div class="well">
+                <div class="text-right">
+                        <a class="btn btn-success" href="/blogposts/<%= blogpost._id %>/comments/new"><i class="fas fa-plus"></i> Add New Comment</a>
+                </div>
+                <hr>
+                <% blogpost.comments.forEach(function(comment){ %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong><%= comment.author.username %></strong>
+<span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                            <p>
+                                <%= comment.text %>
+                            </p>
+                            <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                                <a class="btn btn-warning btn-xs" href="/blogposts/<%= blogpost._id %>/comments/<%= comment._id %>/edit"><i class="far fa-edit"></i> Edit</a>
+                                <form class="delete-form" action="/blogposts/<%= blogpost._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                                    <button type="submit" value="Delete" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+
+<% include ../partials/footer %>
