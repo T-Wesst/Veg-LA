@@ -100,7 +100,7 @@ router.delete('/:comment_id', middleware.checkCommentOwnership, function(
     } else {
       //same as back
       req.flash('success', 'Comment deleted');
-      res.redirect(`/blogposts/ + ${req.params.id}`);
+      res.redirect(`/blogposts/${req.params.id}`);
     }
   });
 });
