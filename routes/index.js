@@ -22,7 +22,7 @@ router.post('/register', function(req, res) {
       return res.render('register', { error: err.message });
     } else {
       passport.authenticate('local')(req, res, function() {
-        req.flash('success', 'Welcome to AboutLa ' + user.username);
+        req.flash('success', `Welcome to Veg-LA ${user.username}`);
         res.redirect('/blogposts');
       });
     }
@@ -47,7 +47,7 @@ router.post('/login', function(req, res, next) {
       if (err) {
         return next(err);
       }
-      req.flash('success', 'Welcome back ' + user.username + '!');
+      req.flash('success', `Welcome back ${user.username}!`);
       res.redirect('/blogposts');
     });
   })(req, res, next);
