@@ -1,27 +1,11 @@
 const mongoose = require('mongoose');
 //Schema Setup
 blogpostSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: 'Name cannot be blank',
-    trim: true
-  },
-  price: {
-    type: Number,
-    required: true
-  },
-  image: {
-    type: String,
-    required: true
-  },
-  body: {
-    type: String,
-    required: true
-  },
-  createdDate: {
-    type: Date,
-    default: Date.now
-  },
+  title: String,
+  price: String,
+  image: String,
+  body: String,
+  createdAt: { type: Date, default: Date.now },
   author: {
     id: {
       type: mongoose.Schema.Types.ObjectId,
